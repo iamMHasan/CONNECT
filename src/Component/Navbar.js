@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {Link} from 'react-router-dom'
+import { AuthContext } from '../Context/AuthProvider';
 
 const Navbar = () => {
+  const {logOut, user} = useContext(AuthContext)
+  const handleLogOut = () =>{
+    logOut()
+    .then(()=>{})
+  }
     return (
         <nav className="
         relative
@@ -42,7 +48,13 @@ const Navbar = () => {
           <li className="nav-item px-2">
             <Link to='/' className="nav-link active" aria-current="page" href="#">Home</Link>
             <Link to='/media' className="nav-link active" aria-current="page" href="#">Media</Link>
-            <Link to='/login' className="nav-link active" aria-current="page" href="#">Login</Link>
+            
+            {
+              user?.uid ? <button onClick={handleLogOut} className="nav-link active text-red-900" aria-current="page" href="#">Logout</button>
+               :
+              <Link to='/login' className="nav-link active" aria-current="page" href="#">Login</Link>
+            }
+            
           </li>
         </ul>
         {/* <!-- Left links --> */}

@@ -1,16 +1,49 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import { useState } from 'react';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
+import { AuthContext } from '../Context/AuthProvider';
+import Loading from '../Component/loading/Loading';
 
 const Register = () => {
+    const { createUser, googleLogin } = useContext(AuthContext)
+    const [loading, setLoading] = useState(false)
+
     const handleRegister = e => {
+        setLoading(true)
         e.preventDefault()
         const form = e.target
         const name = form.name.value
         const email = form.email.value
         const password = form.password.value
-        console.log(name, email, password);
 
+        createUser(email, password)
+            .then(result => {
+                const user = result.user
+                console.log(user);
+                setLoading(false)
+                form.reset()
+                toast.success('user created')
+            })
+            .catch(err => {
+                console.log(err);
+                setLoading(false)
+            })
 
+    }
+    const handleGoogleLogin = () => {
+        googleLogin()
+            .then(result => {
+                const user = result.user
+                console.log(user);
+                setLoading(false)
+                toast.success('user created')
+            })
+            .catch(err => {
+                console.log(err);
+                setLoading(false)
+            })
     }
     return (
         <section className="h-screen w-[95%] mx-auto">
@@ -32,9 +65,8 @@ const Register = () => {
                             <div className="flex flex-row items-center justify-center lg:justify-start">
                                 <p className="text-lg mb-0 mr-4">Register in with</p>
                                 <button
+                                    onClick={handleGoogleLogin}
                                     type="button"
-                                    data-mdb-ripple="true"
-                                    data-mdb-ripple-color="light"
                                     className="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
                                 >
 
@@ -73,7 +105,7 @@ const Register = () => {
                                 <button
                                     className="text-center lg:text-left inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
                                 >
-                                    Register
+                                    {loading ? <Loading /> : 'Register'}
                                 </button>
 
                                 <p className="text-sm font-semibold mt-2 pt-1 mb-0">

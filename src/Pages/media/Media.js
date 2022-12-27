@@ -13,7 +13,7 @@ const Media = () => {
         }
     })
     return (
-        <div className='w-[70%] mx-auto bg-[#94355e]/60'>
+        <div className='w-[95%] md:w-[70%] mx-auto flex flex-col gap-3'>
             {
                 isLoading ? <Loading /> : (
                     <>
