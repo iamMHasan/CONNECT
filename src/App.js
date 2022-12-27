@@ -3,6 +3,9 @@ import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Main from './layout/Main';
 import Home from './Pages/Home/Home';
+import Media from './Pages/media/Media';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
 
 function App() {
   const router = createBrowserRouter([
@@ -13,6 +16,18 @@ function App() {
         {
           path : '/',
           element : <Home/>
+        },
+        {
+          path : '/media',
+          element : <Media/>
+        },
+        {
+          path : '/login',
+          element : <Login/>
+        },
+        {
+          path : '/signup',
+          element : <Register/>
         }
       ]
     }

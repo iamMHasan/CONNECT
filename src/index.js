@@ -6,13 +6,19 @@ import reportWebVitals from './reportWebVitals';
 import 'tw-elements';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
+import { Toaster } from 'react-hot-toast';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // ..
 AOS.init();
+const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+      <Toaster />
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

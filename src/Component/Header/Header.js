@@ -6,10 +6,10 @@ const Header = () => {
         <div style={{
             backgroundImage: ` linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(117, 19, 93, 0.73)), url(${banner})`
         }}
-            className='h-screen flex justify-center items-center text-white'
+            className='h-[80vh] md:h-screen flex justify-center items-center text-white'
         >
             <h1 data-aos="fade-up"
-                className="text-4xl">
+                className="text-4xl p-5">
                 CONNECT with the people you love!</h1>
         </div>
     );
