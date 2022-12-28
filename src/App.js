@@ -8,6 +8,7 @@ import Login from './Pages/Login';
 import Register from './Pages/Register';
 import PostDetails from './Pages/media/PostDetails';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
+import About from './Pages/About/About';
 
 function App() {
   const router = createBrowserRouter([
@@ -35,6 +36,10 @@ function App() {
           path : '/media/:id',
           loader : ({params}) => fetch(`http://localhost:5000/posts/${params.id}`),
           element : <PrivateRoute><PostDetails/></PrivateRoute>
+        },
+        {
+          path : '/about',
+          element : <PrivateRoute><About/></PrivateRoute>
         }
       ]
     }

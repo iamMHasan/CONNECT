@@ -54,9 +54,10 @@ const Navbar = () => {
                :
               <Link to='/login' className="nav-link active" aria-current="page" href="#">Login</Link>
             }
-            
+            <Link to='/about' className="nav-link active" aria-current="page" href="#">My Profile</Link>
           </li>
         </ul>
+        
         {/* <!-- Left links --> */}
         </div>
         {/* <!-- Collapsible wrapper --> */}
