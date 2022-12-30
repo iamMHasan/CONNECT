@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../../Context/AuthProvider';
-import {toast} from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 import Loading from '../../Component/loading/Loading';
+import { AiOutlineCloudUpload } from "react-icons/ai";
 
-const EditAboutModal = ({refetch}) => {
+const EditAboutModal = ({ refetch }) => {
     const [loading, setLoading] = useState(false)
     const { user } = useContext(AuthContext)
     const handleUserInfo = e => {
@@ -14,31 +15,44 @@ const EditAboutModal = ({refetch}) => {
         const name = form.name.value
         const address = form.adress.value
         const university = form.university.value
-        
-        const userInfo = {
-            name,
-            address,
-            university,
-            email : user?.email
-        }
-        fetch(`http://localhost:5000/userInfo/${user?.email}`,{
-            method : 'PUT',
-            headers : {
-                'content-type' : 'application/json'
-            },
-            body : JSON.stringify(userInfo)
+        const image = e.target.image.files[0]
+
+        const formData = new FormData()
+        formData.append('image', image )
+        const url = 'https://api.imgbb.com/1/upload?key=6fe1164c2c0eeca68905e318bf8d48ca'
+        fetch(url, {
+            method : 'POST',
+            body : formData
         })
         .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            toast.success('updated info successfull')
-            setLoading(false)
-            form.reset()
-            refetch()
-        })
-        .catch(err => {
-            console.log(err);
-            setLoading(false)
+        .then(data =>{
+            console.log(data?.data?.url);
+            const userInfo = {
+                name,
+                address,
+                university,
+                email: user?.email,
+                userPhoto :data?.data?.url,
+            }
+            fetch(`https://connect-server-gamma.vercel.app/userInfo/${user?.email}`, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(userInfo)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    toast.success('updated info successfull')
+                    setLoading(false)
+                    form.reset()
+                    refetch()
+                })
+                .catch(err => {
+                    console.log(err);
+                    setLoading(false)
+                })
         })
     }
     return (
@@ -127,6 +141,12 @@ const EditAboutModal = ({refetch}) => {
                                 name='university'
                                 placeholder='Your university' />
                         </div>
+                        <label className='flex justify-start gap-2 items-center'>
+                            <AiOutlineCloudUpload size={20}></AiOutlineCloudUpload>
+                            <h1 className="text-xs">Update photo</h1>
+                            <input name='image' type="file" size="60" />
+                        </label>
+
 
                     </div>
                     <div
@@ -163,7 +183,7 @@ active:bg-blue-800 active:shadow-lg
 transition
 duration-150
 ease-in-out
-ml-1">{ loading ? <Loading/> : 'Save changes'}</button>
+ml-1">{loading ? <Loading /> : 'Save changes'}</button>
                     </div>
                 </div>
             </form>

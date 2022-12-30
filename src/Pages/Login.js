@@ -7,6 +7,7 @@ import { AuthContext } from '../Context/AuthProvider';
 
 const Login = () => {
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
     const {signInUser ,googleLogin} = useContext(AuthContext)
     const location = useLocation()
     const navigate = useNavigate()
@@ -29,6 +30,7 @@ const Login = () => {
         .catch(err =>{
             console.log(err);
             setLoading(false)
+            setError(err.message)
         })
     }
     const handleGoogleLogin = () => {
@@ -111,6 +113,7 @@ const Login = () => {
                                     loading ? <Loading/> : ' Login'
                                    }
                                 </button>
+                                <p>{error}</p>
                                 <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                                     Don't have an account?
                                     <Link

@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import './SharePost.css'
 import { BsLink45Deg } from "react-icons/bs";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import Button from '../Button/Button';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { Link , useNavigate} from 'react-router-dom';
 import Loading from '../loading/Loading';
 import { AuthContext } from '../../Context/AuthProvider';
+import TextStyle from '../text/TextStyle';
 
 const SharePost = () => {
     const {user} = useContext(AuthContext)
@@ -19,7 +21,7 @@ const SharePost = () => {
         const text = e.target.text.value 
         const image = e.target.image.files[0]
         
-        const formData = new FormData
+        const formData = new FormData()
         formData.append('image', image )
         const url = 'https://api.imgbb.com/1/upload?key=6fe1164c2c0eeca68905e318bf8d48ca'
         fetch(url, {
@@ -33,9 +35,9 @@ const SharePost = () => {
                 text,
                 image : data.data.url,
                 userName : user?.displayName,
-                userPhoto : user?.photoURL
+                photoURL : user?.photoURL
             }
-            fetch('http://localhost:5000/posts',{
+            fetch('https://connect-server-gamma.vercel.app/posts',{
                 method : 'POST',
                 headers : {
                     'content-type' : 'application/json'
@@ -58,12 +60,10 @@ const SharePost = () => {
         })
     }
     return (
-        <div >
-            <h1 className="text-3xl text-[#94355e] hover:scale-105 transition duration-100 font-semibold text-center p-4">Share your mood now</h1>
-            {
-                user?.uid ? (
-                    <div>
-                <form onSubmit={handleSharePost} className='flex flex-col justify-center items-center'>
+        <div className='mt-10'>
+           <TextStyle>Share your mood now</TextStyle>
+           <div>
+                <form onSubmit={handleSharePost} className='flex flex-col justify-end items-center'>
                     <div className="mb-1 w-[90%] xl:w-[70%]">
                         <textarea
                             className="
@@ -90,21 +90,17 @@ const SharePost = () => {
                             required
                         ></textarea>
                     </div>
-                    <div className="flex justify-center items-center">
-                        <label className='py-1 px-2 leading-none mr-1  rounded-xl text-white hover:bg-black/30 bg-black'> <div className="flex justify-center items-center"><BsLink45Deg size={20}></BsLink45Deg> Add image </div>
+                    <div className="flex justify-end items-center">
+                        <label className='py-1 px-2 leading-none mr-1  rounded-xl text-black hover:bg-black/30'> <div className="flex justify-center items-center"><AiOutlineCloudUpload size={20}></AiOutlineCloudUpload> Add image </div>
                             <input name='image' type="file" size="60" />
                         </label>
-                        <Button>{loading ? <Loading/> : 'Post'}</Button>
+                        {
+                            user?.uid ? <Button>{loading ? <Loading/> : 'Post'}</Button> : <h1 className="text-xl text-center">Please <Link to='/login'><span className='font-bold text-green-900'>login</span></Link> to submit post</h1>
+                        }
                     </div>
                 </form>
                 {error && error}
             </div>
-                ) : (
-                    <>
-                    <h1 className="text-2xl text-center">Please <Link to='/login'><span className='font-bold text-green-900'>login</span></Link> to post</h1>
-                    </>
-                )
-            }
         </div>
     );
 };

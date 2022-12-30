@@ -9,6 +9,7 @@ import Loading from '../Component/loading/Loading';
 const Register = () => {
     const { createUser, googleLogin } = useContext(AuthContext)
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
 
     const handleRegister = e => {
         setLoading(true)
@@ -29,6 +30,7 @@ const Register = () => {
             .catch(err => {
                 console.log(err);
                 setLoading(false)
+                setError(err.message)
             })
 
     }
@@ -107,7 +109,7 @@ const Register = () => {
                                 >
                                     {loading ? <Loading /> : 'Register'}
                                 </button>
-
+                                <p>{error}</p>
                                 <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                                     Don't have an account?
                                     <Link

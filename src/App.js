@@ -34,7 +34,7 @@ function App() {
         },
         {
           path : '/media/:id',
-          loader : ({params}) => fetch(`http://localhost:5000/posts/${params.id}`),
+          loader : ({params}) => fetch(`https://connect-server-gamma.vercel.app/posts/${params.id}`),
           element : <PrivateRoute><PostDetails/></PrivateRoute>
         },
         {
